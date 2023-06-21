@@ -1601,6 +1601,10 @@ establish_signal_handlers (void)
 }
 
 /**********************************************************************/
+void show_version(void)
+{
+    printf("picocom v%s\n", VERSION_STR);
+}
 
 void
 show_usage(char *name)
@@ -1611,7 +1615,7 @@ show_usage(char *name)
     s = strrchr(name, '/');
     s = s ? s+1 : name;
 
-    printf("picocom v%s\n", VERSION_STR);
+    show_version();
 
     printf("\nCompiled-in options:\n");
     printf("  TTY_Q_SZ is %d\n", TTY_Q_SZ);
@@ -1663,6 +1667,7 @@ show_usage(char *name)
     printf("  --lower-dtr\n");
     printf("  --raise-dtr\n");
     printf("  --<q>uiet\n");
+    printf("  --<V>ersion\n");
     printf("  --<h>elp\n");
     printf("<map> is a comma-separated list of one or more of:\n");
     printf("  crlf : map CR --> LF\n");
@@ -1697,6 +1702,7 @@ parse_args(int argc, char *argv[])
     static struct option longOptions[] =
     {
         {"receive-cmd", required_argument, 0, 'v'},
+        {"version", no_argument, 0, 'V'},
         {"send-cmd", required_argument, 0, 's'},
         {"imap", required_argument, 0, 'I' },
         {"omap", required_argument, 0, 'O' },
@@ -1737,7 +1743,7 @@ parse_args(int argc, char *argv[])
         /* no default error messages printed. */
         opterr = 0;
 
-        c = getopt_long(argc, argv, "hirulcqXnv:s:r:e:f:b:y:d:p:g:t:x:T:",
+        c = getopt_long(argc, argv, "hirulcqXnVv:s:r:e:f:b:y:d:p:g:t:x:T:",
                         longOptions, &optionIndex);
 
         if (c < 0)
@@ -1926,6 +1932,9 @@ parse_args(int argc, char *argv[])
             break;
         case 'h':
             show_usage(argv[0]);
+            exit(EXIT_SUCCESS);
+        case 'V':
+            show_version();
             exit(EXIT_SUCCESS);
         case '?':
         default:

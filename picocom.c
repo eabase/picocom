@@ -149,7 +149,7 @@ struct map_names_s {
     { NULL, 0 }
 };
 
-int
+static int
 parse_map (char *s)
 {
     const char *m;
@@ -172,7 +172,7 @@ parse_map (char *s)
     return flags;
 }
 
-void
+static void
 print_map (int flags)
 {
     int i;
@@ -295,7 +295,7 @@ int tty_write_sz;
 
 /**********************************************************************/
 
-int
+static int
 pinfo(const char *format, ...)
 {
     va_list args;
@@ -321,7 +321,7 @@ pinfo(const char *format, ...)
 
 char lockname[_POSIX_PATH_MAX] = "";
 
-int
+static int
 uucp_lockname(const char *dir, const char *file)
 {
     char *p, *cp;
@@ -344,7 +344,7 @@ uucp_lockname(const char *dir, const char *file)
     return 0;
 }
 
-int
+static int
 uucp_lock(void)
 {
     int r, fd, pid;
@@ -384,7 +384,7 @@ uucp_lock(void)
     return 0;
 }
 
-int
+static int
 uucp_unlock(void)
 {
     if ( lockname[0] ) unlink(lockname);
@@ -417,7 +417,7 @@ hex2byte (char c)
     return r;
 }
 
-int
+static int
 hex2bin(unsigned char *buf, int sz, const char *str)
 {
     char c;
@@ -448,7 +448,7 @@ hex2bin(unsigned char *buf, int sz, const char *str)
 
 #ifndef LINENOISE
 
-char *
+static char *
 read_filename (void)
 {
     char fname[_POSIX_PATH_MAX];
@@ -463,7 +463,7 @@ read_filename (void)
         return strdup(fname);
 }
 
-int
+static int
 read_baud (void)
 {
     char baudstr[9], *ep;
@@ -485,7 +485,7 @@ read_baud (void)
     return baud;
 }
 
-int
+static int
 read_hex (unsigned char *buff, int sz)
 {
     char hexstr[256];
@@ -509,7 +509,7 @@ read_hex (unsigned char *buff, int sz)
 
 #else /* LINENOISE defined */
 
-void
+static void
 file_completion_cb (const char *buf, linenoiseCompletions *lc)
 {
     DIR *dirp;
@@ -555,7 +555,7 @@ file_completion_cb (const char *buf, linenoiseCompletions *lc)
 
 static char *history_file_path = NULL;
 
-void
+static void
 init_history (void)
 {
     char *home_directory;
@@ -574,14 +574,14 @@ init_history (void)
     }
 }
 
-void
+static void
 cleanup_history (void)
 {
     if (history_file_path)
         free(history_file_path);
 }
 
-void
+static void
 add_history (char *fname)
 {
     linenoiseHistoryAdd(fname);
@@ -589,7 +589,7 @@ add_history (char *fname)
         linenoiseHistorySave(history_file_path);
 }
 
-char *
+static char *
 read_filename (void)
 {
     char *fname;
@@ -603,7 +603,7 @@ read_filename (void)
     return fname;
 }
 
-int
+static int
 read_baud (void)
 {
     char *baudstr, *ep;
@@ -628,7 +628,7 @@ read_baud (void)
     return baud;
 }
 
-int
+static int
 read_hex (unsigned char *buff, int sz)
 {
     char *hexstr;
@@ -655,7 +655,7 @@ read_hex (unsigned char *buff, int sz)
 
 /**********************************************************************/
 
-void
+static void
 cleanup (int drain, int noreset, int hup)
 {
     if ( tty_fd >= 0 ) {
@@ -709,7 +709,7 @@ cleanup (int drain, int noreset, int hup)
     }
 }
 
-void
+static void
 fatal (const char *format, ...)
 {
     va_list args;
@@ -731,7 +731,7 @@ fatal (const char *format, ...)
    due to mapping */
 #define M_MAXMAP 4
 
-int
+static int
 map2hex (char *b, char c)
 {
     const char *hexd = "0123456789abcdef";
@@ -743,7 +743,7 @@ map2hex (char *b, char c)
     return 4;
 }
 
-int
+static int
 do_map (char *b, int map, char c)
 {
     int n = -1;
@@ -821,7 +821,7 @@ do_map (char *b, int map, char c)
     return n;
 }
 
-void
+static void
 map_and_write (int fd, int map, char c)
 {
     char b[M_MAXMAP];
@@ -835,13 +835,13 @@ map_and_write (int fd, int map, char c)
 
 /**********************************************************************/
 
-int
+static int
 baud_up (int baud)
 {
     return term_baud_up(baud);
 }
 
-int
+static int
 baud_down (int baud)
 {
     int nb;
@@ -851,7 +851,7 @@ baud_down (int baud)
     return nb;
 }
 
-enum flowcntrl_e
+static enum flowcntrl_e
 flow_next (enum flowcntrl_e flow)
 {
     switch(flow) {
@@ -872,7 +872,7 @@ flow_next (enum flowcntrl_e flow)
     return flow;
 }
 
-enum parity_e
+static enum parity_e
 parity_next (enum parity_e parity)
 {
     switch(parity) {
@@ -893,7 +893,7 @@ parity_next (enum parity_e parity)
     return parity;
 }
 
-int
+static int
 bits_next (int bits)
 {
     bits++;
@@ -902,7 +902,7 @@ bits_next (int bits)
     return bits;
 }
 
-int
+static int
 stopbits_next (int bits)
 {
     bits++;
@@ -916,7 +916,7 @@ stopbits_next (int bits)
 #define statpf(...) \
     do { if (! quiet) fd_printf(__VA_ARGS__); } while(0)
 
-int
+static int
 show_status (int quiet)
 {
     int baud, bits, stopbits, mctl;
@@ -1005,7 +1005,7 @@ show_status (int quiet)
 
 /**********************************************************************/
 
-void
+static void
 show_keys()
 {
 #ifndef NO_HELP
@@ -1062,7 +1062,7 @@ show_keys()
 #define RUNCMD_ARGS_MAX 32
 #define RUNCMD_EXEC_FAIL 126
 
-void
+static void
 establish_child_signal_handlers (void)
 {
     struct sigaction dfl_action;
@@ -1076,7 +1076,7 @@ establish_child_signal_handlers (void)
     sigaction (SIGTERM, &dfl_action, NULL);
 }
 
-int
+static int
 run_cmd(int fd, const char *cmd, const char *args_extra)
 {
     pid_t pid;
@@ -1179,7 +1179,8 @@ run_cmd(int fd, const char *cmd, const char *args_extra)
 
 /**********************************************************************/
 
-int tty_q_push(const char *s, int len) {
+static int
+tty_q_push(const char *s, int len) {
     int i, sz, n;
     unsigned char *b;
 
@@ -1210,7 +1211,7 @@ int tty_q_push(const char *s, int len) {
 
 /* Process command key. Returns non-zero if command results in picocom
    exit, zero otherwise. */
-int
+static int
 do_command (unsigned char c)
 {
     int newbaud, newbits, newstopbits;
@@ -1403,7 +1404,7 @@ enum le_reason {
     LE_SIGNAL
 };
 
-enum le_reason
+static enum le_reason
 loop(void)
 {
     enum {
@@ -1563,7 +1564,7 @@ loop(void)
 
 /**********************************************************************/
 
-void
+static void
 deadly_handler(int signum)
 {
     (void)signum; /* silence unused warning */
@@ -1574,7 +1575,7 @@ deadly_handler(int signum)
     }
 }
 
-void
+static void
 establish_signal_handlers (void)
 {
         struct sigaction exit_action, ign_action;
@@ -1601,12 +1602,13 @@ establish_signal_handlers (void)
 }
 
 /**********************************************************************/
-void show_version(void)
+static void
+show_version(void)
 {
     printf("picocom v%s\n", VERSION_STR);
 }
 
-void
+static void
 show_usage(char *name)
 {
 #ifndef NO_HELP
@@ -1694,7 +1696,7 @@ show_usage(char *name)
 
 /**********************************************************************/
 
-void
+static void
 parse_args(int argc, char *argv[])
 {
     int r;
@@ -2026,7 +2028,7 @@ parse_args(int argc, char *argv[])
 
 /**********************************************************************/
 
-void
+static void
 set_dtr_rts (void)
 {
     int r;

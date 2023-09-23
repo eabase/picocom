@@ -1742,12 +1742,12 @@ parse_args(int argc, char *argv[])
         int optionIndex = 0;
         int c;
         int map;
-        char *ep;
+        char *ep, *errmsg = "Unrecognised option";
 
         /* no default error messages printed. */
         opterr = 0;
 
-        c = getopt_long(argc, argv, "hirulcqXnVv:s:r:e:f:b:y:d:p:g:t:x:T:",
+        c = getopt_long(argc, argv, ":hirulcqXnVv:s:r:e:f:b:y:d:p:g:t:x:T:",
                         longOptions, &optionIndex);
 
         if (c < 0)
@@ -1940,12 +1940,15 @@ parse_args(int argc, char *argv[])
         case 'V':
             show_version();
             exit(EXIT_SUCCESS);
+        case ':':
+            errmsg = "Missing parameter for";
+            /* fallthrough */
         case '?':
         default:
             if (optopt)
-                fprintf(stderr, "Unrecognised option '-%c'\n", optopt);
+                fprintf(stderr, "%s '-%c'\n", errmsg, optopt);
             else
-                fprintf(stderr, "Unrecognised option '%s'\n", argv[optind - 1]);
+                fprintf(stderr, "%s '%s'\n", errmsg, argv[optind - 1]);
             r = -1;
             break;
         }

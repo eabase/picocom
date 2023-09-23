@@ -1,5 +1,8 @@
 
-VERSION = 2023-04-git
+VERSION = 2023-04-dev
+ifneq (,$(findstring dev,$(VERSION)))
+VERSION := $(if $(shell command -v git),$(shell git describe --tags --dirty --always),$(VERSION))
+endif
 
 #CC ?= gcc
 CPPFLAGS += -DVERSION_STR=\"$(VERSION)\"

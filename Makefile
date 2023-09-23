@@ -87,7 +87,6 @@ clean:
 	rm -f linenoise-1.0/linenoise.o
 	rm -f custbaud.o termios2.o custbaud_bsd.o
 	rm -f *~
-	rm -f \#*\#
 
 distclean: clean
 	rm -f picocom
@@ -96,4 +95,3 @@ realclean: distclean
 	rm -f picocom.1
 	rm -f picocom.1.html
 	rm -f picocom.1.pdf
-	rm -f CHANGES

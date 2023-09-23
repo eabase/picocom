@@ -1136,6 +1136,8 @@ run_cmd(int fd, const char *cmd, const char *args_extra)
         /* unmanage terminal, and reset it to canonical mode */
         term_drain(STI);
         term_remove(STI);
+        /* flush serial port queues */
+        term_flush(fd);
         /* unmanage serial port fd, without reset */
         term_erase(fd);
         /* set serial port fd to blocking mode */

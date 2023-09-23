@@ -1,5 +1,5 @@
 
-VERSION = 2023-04
+VERSION = 2023-04-git
 
 #CC ?= gcc
 CPPFLAGS += -DVERSION_STR=\"$(VERSION)\"

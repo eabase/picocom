@@ -18,7 +18,7 @@ picocom - minimal dumb-terminal emulation program
 
 As its name suggests, **picocom(1)** is a minimal dumb-terminal
 emulation program. It is, in principle, very much like **minicom(1)**,
-only it's "pico" instead of "mini"! It was designed to serve as a
+only it is "pico" instead of "mini"! It was designed to serve as a
 simple, manual, modem configuration, testing, and debugging tool. It
 has also served (quite well) as a low-tech serial communications
 program to allow access to all types of devices that provide serial
@@ -295,7 +295,7 @@ Picocom accepts the following command-line options.
 **--hangup** | **-u**
 
 :   If given together with **--noreset**, picocom will not reset the
-    serial port to it's original settings on exit, but it *will* clear
+    serial port to its original settings on exit, but it *will* clear
     the modem control lines (typically DTR and RTS) to signal a modem
     hangup. Without the **--noreset** option (explicitly given, or
     implied by exiting with the "Quit" command) **--hangup** has no
@@ -305,7 +305,7 @@ Picocom accepts the following command-line options.
 **--nolock** | **-l**
 
 :   If given, picocom will _not_ attempt to lock the serial port
-    before opening it. Normally, depending on how it's compiled,
+    before opening it. Normally, depending on how it is compiled,
     picocom attempts to get a UUCP-style lock-file
     (e.g. '/var/lock/LCK..ttyS0') before opening the port, or attempts
     to lock the port device-node using **flock(2)**. Failing to do so,
@@ -463,8 +463,8 @@ Picocom accepts the following command-line options.
 **--help** | **-h**
 
 :   Print a short help message describing the command-line
-    options. Picocom's version, compile-time options, and enabled
-    features are also shown.
+    options. Version, compile-time options, and enabled
+    features of picocom are also shown.
 
 
 # CHANGING DEFAULT OPTIONS
@@ -630,7 +630,7 @@ operation and what happens in each such condition:
   output queue (data read from the standard input, but not yet written
   to the port) as well as the contents of the O/S serial port output
   buffer (data already written to the port, but not yet transmitted)
-  are discarded (flushed). Then the serial port is reset to it's
+  are discarded (flushed). Then the serial port is reset to its
   original settings, and the modem-control lines are cleared signaling
   a modem reset, subject to the **--noreset** and the **--hangup**
   options. After that picocom exits with a success status.
@@ -651,7 +651,7 @@ operation and what happens in each such condition:
   case. Picocom exits with a success exit status.
 
 - Zero bytes are read from the standard input. This usually means that
-  whatever was connected to picocom's standard input has been closed
+  whatever was connected to the standard input of picocom has been closed
   or, if a file was connected, then picocom has read up to the end of
   the file. In this case, if the **--exit-after** option is *not*
   given, picocom stops reading from the standard input, and keeps
@@ -659,7 +659,7 @@ operation and what happens in each such condition:
   port) until its output queue empties. When this happens, picocom
   waits for the O/S serial port output buffer to drain and then
   (subject to the **--noreset** and **--hangup** options) resets the
-  serial port to it's initial settings, clears the modem-control
+  serial port to its initial settings, clears the modem-control
   lines, and exits. If the **--exit-after** option is given then,
   again, picocom stops reading from the standard input and continues
   operating normally but, in this case, it does so until it becomes

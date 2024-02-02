@@ -71,12 +71,7 @@ custbaud.o : custbaud.c custbaud.h
 doc : picocom.1.html picocom.1 picocom.1.pdf
 
 picocom.1 : picocom.1.md
-	sed 's/\*\*\[/\*\*/g;s/\]\*\*/\*\*/g' $? \
-	| pandoc -s -f markdown-smart -t man \
-	    -Vfooter="Picocom $(VERSION)" \
-	    -Vadjusting='l' \
-	    -Vhyphenate='' \
-	    -o $@
+	(echo '% PICOCOM 1 "v$(VERSION)"'; cat $<) | go-md2man >$@
 
 picocom.1.html : picocom.1
 	groff -man -Thtml $? > $@

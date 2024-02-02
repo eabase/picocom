@@ -1,9 +1,3 @@
-% PICOCOM(1)
-
----
-header: User Commands
----
-
 # NAME
 
 picocom - minimal dumb-terminal emulation program
@@ -279,7 +273,6 @@ Picocom accepts the following command-line options.
     user can exit picocom using the "Quit" command (instead of
     "Exit"), which makes picocom behave *exactly* as if **--noreset**
     was given. See also the **--hangup** option. (Default: Disabled)
-
     NOTICE: Picocom clears the modem control lines on exit by setting
     the *HUPCL* control bit of the respective port. Picocom always
     sets HUPCL according to the **--noreset** and **--hangup**
@@ -427,8 +420,7 @@ Picocom accepts the following command-line options.
     picocom drains the O/S serial port output buffer (i.e. waits for
     data already written to the port to be transmitted) and observes
     the **--noreset** and **--hangup** options as usual. (Default: not
-    set).
-
+    set)
     NOTICE: If **--exit-after** is set, reading zero bytes from the
     standard input (which usually means that whatever was connected
     there has been closed), will *not* cause picocom to exit. Instead,
@@ -440,18 +432,18 @@ Picocom accepts the following command-line options.
 
 **--exit** | **-X**
 
-:    Exit picocom immediately after opening and configuring the serial
-     port. Do *not* read *anything* from the standard input or from
-     the serial port. When exiting the **--noreset** and **--hangup**
-     options are observed as usual. With **--exit** and **--noreset**
-     (and possibly **--hangup**) picocom can be used as a very crude
-     replacement of **stty(1)**. If an init string is also given (see
-     **--initstring** option), picocom exits immediately after sending
-     (writing) the init string to the serial port and draining the O/S
-     serial port output buffer (i.e. waiting for data written to the
-     port to be transmitted). Again, nothing is read from the standard
-     input, or from the serial port. The **--exit** option, overrides
-     the **--exit-after** option. (Default: Disabled)
+:   Exit picocom immediately after opening and configuring the serial
+    port. Do *not* read *anything* from the standard input or from
+    the serial port. When exiting the **--noreset** and **--hangup**
+    options are observed as usual. With **--exit** and **--noreset**
+    (and possibly **--hangup**) picocom can be used as a very crude
+    replacement of **stty(1)**. If an init string is also given (see
+    **--initstring** option), picocom exits immediately after sending
+    (writing) the init string to the serial port and draining the O/S
+    serial port output buffer (i.e. waiting for data written to the
+    port to be transmitted). Again, nothing is read from the standard
+    input, or from the serial port. The **--exit** option, overrides
+    the **--exit-after** option. (Default: Disabled)
 
 **--quiet** | **-q**
 
@@ -472,7 +464,7 @@ Picocom accepts the following command-line options.
 Picocom does not support config files. If you want to change default
 options, use either a custom script or aliases, e.g.:
 
-      alias picocom='picocom -b 115200 /dev/ttyS0'
+    alias picocom='picocom -b 115200 /dev/ttyS0'
 
 
 # DISPLAY OF OPTIONS AND PORT SETTINGS
@@ -507,7 +499,7 @@ assuming that neither the **--noinit**, nor the **--quiet** command
 line options have been given), the port settings are silently
 checked. If any mismatch is detected between the requested and the
 actual port settings, a warning message is displayed. You may then use
-the **[C-v]** command to determine the exact mismatch or mismatches.
+the **C-v** command to determine the exact mismatch or mismatches.
 
 # SENDING AND RECEIVING FILES
 
@@ -678,14 +670,14 @@ operation and what happens in each such condition:
 
 # AUTHOR
 
-Written by Nick Patavalis <npat@efault.net>, currently maintained by Wolfram
-Sang <wsa@kernel.org>
+Written by Nick Patavalis `<npat@efault.net>`, currently maintained by Wolfram
+Sang `<wsa@kernel.org>`
 
 
 # AVAILABILITY
 
 Download the latest release from:
-<https://gitlab.com/wsakernel/picocom/-/releases>
+`<https://gitlab.com/wsakernel/picocom/-/releases>`
 
 
 # COPYRIGHT

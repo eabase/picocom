@@ -67,18 +67,10 @@ custbaud.o : custbaud.c custbaud.h
 .c.o :
 	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
 
-
-doc : picocom.1.html picocom.1 picocom.1.pdf
+doc : picocom.1
 
 picocom.1 : picocom.1.md
 	(echo '% PICOCOM 1 "v$(VERSION)"'; cat $<) | go-md2man >$@
-
-picocom.1.html : picocom.1
-	groff -man -Thtml $? > $@
-
-picocom.1.pdf : picocom.1
-	groff -man -Tpdf $? > $@
-
 
 clean:
 	rm -f picocom.o term.o fdio.o split.o
@@ -88,8 +80,4 @@ clean:
 
 distclean: clean
 	rm -f picocom
-
-realclean: distclean
 	rm -f picocom.1
-	rm -f picocom.1.html
-	rm -f picocom.1.pdf

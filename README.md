@@ -28,7 +28,8 @@ operating systems are very welcome.
 
 For a description how picocom works, its command line options,
 and usage examples, see the manual page included in the source
-distribution as "picocom.1", and also html-ized as "picocom.1.html".
+distribution either as markdown ("picocom.1.md"), or after compiling
+docs as a manpage ("picocom.1").
 
 People who have contributed to picocom, by offering feature
 implementations, bug-fixes, corrections, and suggestions are listed in
@@ -45,6 +46,11 @@ promises, though!), bug-fixes and rants, to the Gitlab repository at:
 Change into the source directory of picocom and say:
 
     make
+
+Picocom has one build-dependency if you want to build docs. `go-md2man`
+is needed to create the manpage. Once you installed it, say: 
+
+    make doc
 
 This will be enough to compile picocom for most modern Unix-like
 systems. If you want, you can then strip the resulting binary like

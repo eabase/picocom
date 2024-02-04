@@ -51,6 +51,10 @@ linenoise-1.0/linenoise.o : linenoise-1.0/linenoise.c linenoise-1.0/linenoise.h
 ## Comment this IN to remove help strings (saves ~ 4-6 Kb).
 #CPPFLAGS += -DNO_HELP
 
+## Comment this IN to disable fork() for MMU-less systems.
+## That means no sending/receiving of files. Saves ~ 6-8Kb.
+#CPPFLAGS += -DNO_FORK
+
 
 OBJS += picocom.o term.o fdio.o split.o custbaud.o termios2.o custbaud_bsd.o
 picocom : $(OBJS)

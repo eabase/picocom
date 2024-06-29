@@ -172,6 +172,7 @@ parse_map (char *s)
     return flags;
 }
 
+#ifndef NO_HELP
 static void
 print_map (int flags)
 {
@@ -182,6 +183,7 @@ print_map (int flags)
             printf("%s,", map_names[i].name);
     printf("\r\n");
 }
+#endif
 
 /**********************************************************************/
 

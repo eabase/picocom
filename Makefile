@@ -5,7 +5,10 @@ VERSION := $(if $(shell command -v git),$(shell git describe --tags --dirty --al
 endif
 
 #CC ?= gcc
-CPPFLAGS += -DVERSION_STR=\"$(VERSION)\"
+
+# EXTRA_CPPFLAGS is added for build-systems who prefer to not touch
+# CPPFLAGS directly.
+CPPFLAGS += -DVERSION_STR=\"$(VERSION)\" $(EXTRA_CPPFLAGS)
 CFLAGS += -Wall -g
 
 LD = $(CC)

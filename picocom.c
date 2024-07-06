@@ -218,6 +218,7 @@ struct {
     int raise_dtr;
     int quiet;
     struct timespec txdelay;
+    char *key_prefix;
 } opts = {
     .port = NULL,
     .baud = 9600,
@@ -249,6 +250,7 @@ struct {
     .raise_dtr = 0,
     .quiet = 0,
     .txdelay = { 0, 0 },
+    .key_prefix = "C-",
 };
 
 int sig_exit = 0;
@@ -1015,44 +1017,44 @@ show_keys()
     fd_printf(STO, "*** Picocom commands (all prefixed by [C-%c])\r\n",
               KEYC(opts.escape));
     fd_printf(STO, "\r\n");
-    fd_printf(STO, "*** [C-%c] : Exit picocom\r\n",
-              KEYC(KEY_EXIT));
-    fd_printf(STO, "*** [C-%c] : Exit without resetting serial port\r\n",
-              KEYC(KEY_QUIT));
-    fd_printf(STO, "*** [C-%c] : Set baudrate\r\n",
-              KEYC(KEY_BAUD));
-    fd_printf(STO, "*** [C-%c] : Increase baudrate (baud-up)\r\n",
-              KEYC(KEY_BAUD_UP));
-    fd_printf(STO, "*** [C-%c] : Decrease baudrate (baud-down)\r\n",
-              KEYC(KEY_BAUD_DN));;
-    fd_printf(STO, "*** [C-%c] : Change number of databits\r\n",
-              KEYC(KEY_BITS));
-    fd_printf(STO, "*** [C-%c] : Change number of stopbits\r\n",
-              KEYC(KEY_STOP));
-    fd_printf(STO, "*** [C-%c] : Change flow-control mode\r\n",
-              KEYC(KEY_FLOW));
-    fd_printf(STO, "*** [C-%c] : Change parity mode\r\n",
-              KEYC(KEY_PARITY));
-    fd_printf(STO, "*** [C-%c] : Pulse DTR\r\n",
-              KEYC(KEY_PULSE));
-    fd_printf(STO, "*** [C-%c] : Toggle DTR\r\n",
-              KEYC(KEY_TOG_DTR));
-    fd_printf(STO, "*** [C-%c] : Toggle RTS\r\n",
-              KEYC(KEY_TOG_RTS));
-    fd_printf(STO, "*** [C-%c] : Send break\r\n",
-              KEYC(KEY_BREAK));
-    fd_printf(STO, "*** [C-%c] : Toggle local echo\r\n",
-              KEYC(KEY_LECHO));
-    fd_printf(STO, "*** [C-%c] : Write hex\r\n",
-              KEYC(KEY_HEX));
-    fd_printf(STO, "*** [C-%c] : Send file\r\n",
-              KEYC(KEY_SEND));
-    fd_printf(STO, "*** [C-%c] : Receive file\r\n",
-              KEYC(KEY_RECEIVE));
-    fd_printf(STO, "*** [C-%c] : Show port settings\r\n",
-              KEYC(KEY_STATUS));
-    fd_printf(STO, "*** [C-%c] : Show this message\r\n",
-              KEYC(KEY_HELP));
+    fd_printf(STO, "*** [%s%c] : Exit picocom\r\n",
+              opts.key_prefix, KEYC(KEY_EXIT));
+    fd_printf(STO, "*** [%s%c] : Exit without resetting serial port\r\n",
+              opts.key_prefix, KEYC(KEY_QUIT));
+    fd_printf(STO, "*** [%s%c] : Set baudrate\r\n",
+              opts.key_prefix, KEYC(KEY_BAUD));
+    fd_printf(STO, "*** [%s%c] : Increase baudrate (baud-up)\r\n",
+              opts.key_prefix, KEYC(KEY_BAUD_UP));
+    fd_printf(STO, "*** [%s%c] : Decrease baudrate (baud-down)\r\n",
+              opts.key_prefix, KEYC(KEY_BAUD_DN));;
+    fd_printf(STO, "*** [%s%c] : Change number of databits\r\n",
+              opts.key_prefix, KEYC(KEY_BITS));
+    fd_printf(STO, "*** [%s%c] : Change number of stopbits\r\n",
+              opts.key_prefix, KEYC(KEY_STOP));
+    fd_printf(STO, "*** [%s%c] : Change flow-control mode\r\n",
+              opts.key_prefix, KEYC(KEY_FLOW));
+    fd_printf(STO, "*** [%s%c] : Change parity mode\r\n",
+              opts.key_prefix, KEYC(KEY_PARITY));
+    fd_printf(STO, "*** [%s%c] : Pulse DTR\r\n",
+              opts.key_prefix, KEYC(KEY_PULSE));
+    fd_printf(STO, "*** [%s%c] : Toggle DTR\r\n",
+              opts.key_prefix, KEYC(KEY_TOG_DTR));
+    fd_printf(STO, "*** [%s%c] : Toggle RTS\r\n",
+              opts.key_prefix, KEYC(KEY_TOG_RTS));
+    fd_printf(STO, "*** [%s%c] : Send break\r\n",
+              opts.key_prefix, KEYC(KEY_BREAK));
+    fd_printf(STO, "*** [%s%c] : Toggle local echo\r\n",
+              opts.key_prefix, KEYC(KEY_LECHO));
+    fd_printf(STO, "*** [%s%c] : Write hex\r\n",
+              opts.key_prefix, KEYC(KEY_HEX));
+    fd_printf(STO, "*** [%s%c] : Send file\r\n",
+              opts.key_prefix, KEYC(KEY_SEND));
+    fd_printf(STO, "*** [%s%c] : Receive file\r\n",
+              opts.key_prefix, KEYC(KEY_RECEIVE));
+    fd_printf(STO, "*** [%s%c] : Show port settings\r\n",
+              opts.key_prefix, KEYC(KEY_STATUS));
+    fd_printf(STO, "*** [%s%c] : Show this message\r\n",
+              opts.key_prefix, KEYC(KEY_HELP));
     fd_printf(STO, "\r\n");
 #else /* defined NO_HELP */
     fd_printf(STO, "*** Help is disabled.\r\n");
@@ -1225,6 +1227,15 @@ do_command (unsigned char c)
     char *fname;
     unsigned char hexbuf[HEXBUF_SZ];
     int n, r;
+
+    /* If key_prefix is an empty string, we have minimal cmds */
+    if (!*opts.key_prefix) {
+        /* minimal cmds mean swapping lowercase and control chars */
+        if (islower(c))
+            c = CKEY(c);
+        else if (iscntrl(c))
+            c = KEYC(c);
+    }
 
     switch (c) {
     case KEY_EXIT:
@@ -1672,6 +1683,7 @@ show_usage(char *name)
     printf("  --raise-rts\n");
     printf("  --lower-dtr\n");
     printf("  --raise-dtr\n");
+    printf("  --<M>inimal-cmds\n");
     printf("  --<q>uiet\n");
     printf("  --<V>ersion\n");
     printf("  --<h>elp\n");
@@ -1734,6 +1746,7 @@ parse_args(int argc, char *argv[])
         {"raise-rts", no_argument, 0, 3},
         {"raise-dtr", no_argument, 0, 4},
         {"tx-delay", required_argument, 0, 'T'},
+        {"minimal-cmds", no_argument, 0, 'M'},
         {"quiet", no_argument, 0, 'q'},
         {"help", no_argument, 0, 'h'},
         {0, 0, 0, 0}
@@ -1749,7 +1762,7 @@ parse_args(int argc, char *argv[])
         /* no default error messages printed. */
         opterr = 0;
 
-        c = getopt_long(argc, argv, ":hirulcqXnVv:s:r:e:f:b:y:d:p:g:t:x:T:",
+        c = getopt_long(argc, argv, ":hirulcqXnVv:s:r:e:f:b:y:d:p:g:t:x:T:M",
                         longOptions, &optionIndex);
 
         if (c < 0)
@@ -1933,6 +1946,9 @@ parse_args(int argc, char *argv[])
         case 'X':
             opts.exit = 1;
             break;
+        case 'M':
+            opts.key_prefix = "";
+            break;
         case 'q':
             opts.quiet = 1;
             break;
@@ -2028,6 +2044,7 @@ parse_args(int argc, char *argv[])
         printf("exit_after is  : %d ms\r\n", opts.exit_after);
     }
     printf("exit is        : %s\r\n", opts.exit ? "yes" : "no");
+    printf("minimal cmds is: %s\r\n", *opts.key_prefix ? "no" : "yes");
     printf("\r\n");
     fflush(stdout);
 #endif /* of NO_HELP */
@@ -2150,8 +2167,8 @@ main (int argc, char *argv[])
     if ( !opts.quiet && !opts.noinit && show_status(1) != 0 ) {
         pinfo("!! Settings mismatch !!");
         if ( ! opts.noescape )
-            pinfo(" Type [C-%c] [C-%c] to see actual port settings",
-                  KEYC(opts.escape), KEYC(KEY_STATUS));
+            pinfo(" Type [C-%c] [%s%c] to see actual port settings",
+                  KEYC(opts.escape), opts.key_prefix, KEYC(KEY_STATUS));
         pinfo("\r\n");
     }
 
@@ -2204,8 +2221,8 @@ main (int argc, char *argv[])
 
 #ifndef NO_HELP
     if ( ! opts.noescape ) {
-        pinfo("Type [C-%c] [C-%c] to see available commands\r\n",
-              KEYC(opts.escape), KEYC(KEY_HELP));
+        pinfo("Type [C-%c] [%s%c] to see available commands\r\n",
+              KEYC(opts.escape), opts.key_prefix, KEYC(KEY_HELP));
     }
 #endif
     pinfo("Terminal ready\r\n");

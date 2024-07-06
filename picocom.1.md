@@ -52,6 +52,9 @@ shown here. From now on, we will use **C-\<key\>** as a short version
 of **Control-\<key\>**, so the default escape character is then
 **C-a**.
 
+All function characters have the form **C-\<key\>**. If the command-line
+option **--minimal-cmds** is given, **\<key\>** only is used.
+
 *escape character*
 
 :   Send the escape character to the serial port and return to
@@ -444,6 +447,13 @@ Picocom accepts the following command-line options.
     port to be transmitted). Again, nothing is read from the standard
     input, or from the serial port. The **--exit** option, overrides
     the **--exit-after** option. (Default: Disabled)
+
+**--minimal-cmds** | **-M**
+
+:   Use **\<key\>** in contrast to **C-\<key\>** as the function
+    character, i.e. **C-a** and **h** will print the help text. While
+    minicom users may feel at home this way, it also makes it easier
+    to accidently change a setting. (Default: Disabled)
 
 **--quiet** | **-q**
 

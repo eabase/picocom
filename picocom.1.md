@@ -472,9 +472,16 @@ Picocom accepts the following command-line options.
 # CHANGING DEFAULT OPTIONS
 
 Picocom does not support config files. If you want to change default
-options, use either a custom script or aliases, e.g.:
+options, use a custom script or aliases, e.g.:
 
     alias picocom='picocom -b 115200 /dev/ttyS0'
+
+Another option is to use command substitution if your shell supports
+it. Here is an example for bash:
+
+    picocom $(<my_config_file)
+
+'my_config_file' contains one command-line option per line.
 
 
 # DISPLAY OF OPTIONS AND PORT SETTINGS

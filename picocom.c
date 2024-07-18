@@ -235,8 +235,13 @@ struct {
 #endif
     .escape = CKEY('a'),
     .noescape = 0,
+#ifdef NO_FORK
+    .send_cmd = "",
+    .receive_cmd = "",
+#else
     .send_cmd = "sz -vv",
     .receive_cmd = "rz -vv -E",
+#endif
     .imap = M_I_DFL,
     .omap = M_O_DFL,
     .emap = M_E_DFL,
@@ -1063,6 +1068,8 @@ show_keys()
 
 /**********************************************************************/
 
+#ifndef NO_FORK
+
 #define RUNCMD_ARGS_MAX 32
 #define RUNCMD_EXEC_FAIL 126
 
@@ -1182,6 +1189,16 @@ run_cmd(int fd, const char *cmd, const char *args_extra)
         exit(RUNCMD_EXEC_FAIL);
     }
 }
+
+#else
+
+static int
+run_cmd(int fd, const char *cmd, const char *args_extra)
+{
+    return 0;
+};
+
+#endif /* !NO_FORK */
 
 /**********************************************************************/
 
@@ -1769,6 +1786,13 @@ parse_args(int argc, char *argv[])
             break;
 
         switch (c) {
+#ifdef NO_FORK
+        case 's':
+        case 'v':
+            fprintf(stderr, "Calling external programs is disabled\n");
+            r = -1;
+            break;
+#else
         case 's':
             strncpy(opts.send_cmd, optarg, sizeof(opts.send_cmd));
             opts.send_cmd[sizeof(opts.send_cmd) - 1] = '\0';
@@ -1777,6 +1801,7 @@ parse_args(int argc, char *argv[])
             strncpy(opts.receive_cmd, optarg, sizeof(opts.receive_cmd));
             opts.receive_cmd[sizeof(opts.receive_cmd) - 1] = '\0';
             break;
+#endif
         case 'I':
             map = parse_map(optarg);
             if (map >= 0) opts.imap = map;

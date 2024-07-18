@@ -5,7 +5,10 @@ VERSION := $(if $(shell command -v git),$(shell git describe --tags --dirty --al
 endif
 
 #CC ?= gcc
-CPPFLAGS += -DVERSION_STR=\"$(VERSION)\"
+
+# EXTRA_CPPFLAGS is added for build-systems who prefer to not touch
+# CPPFLAGS directly.
+CPPFLAGS += -DVERSION_STR=\"$(VERSION)\" $(EXTRA_CPPFLAGS)
 CFLAGS += -Wall -g
 
 LD = $(CC)
@@ -50,6 +53,10 @@ linenoise-1.0/linenoise.o : linenoise-1.0/linenoise.c linenoise-1.0/linenoise.h
 
 ## Comment this IN to remove help strings (saves ~ 4-6 Kb).
 #CPPFLAGS += -DNO_HELP
+
+## Comment this IN to disable fork() for MMU-less systems.
+## That means no sending/receiving of files. Saves ~ 6-8Kb.
+#CPPFLAGS += -DNO_FORK
 
 
 OBJS += picocom.o term.o fdio.o split.o custbaud.o termios2.o custbaud_bsd.o

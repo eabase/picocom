@@ -600,6 +600,8 @@ TAB to hex)
 - **lfhex** (map LF to hex)
 - **8bithex** (map chars with 8th-bit set to hex)
 - **nrmhex** (map normal ascii chars (0x20 <= c < 0x7f) to hex)
+- **upper** (map to uppercase, 'a-z' to 'A-Z')
+- **lower** (map to lowercase, 'A-Z' to 'a-z')
 
 The "to hex" mappings (**???hex**) replace the respective characters
 with their hexadecimal representation (in square brackets), like this:

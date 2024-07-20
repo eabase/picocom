@@ -701,7 +701,7 @@ Download the latest release from:
 
 # COPYRIGHT
 
-Copyright (c) 2003-2018 Nick Patavalis
+Copyright (c) 2003-2018 Nick Patavalis and 2022- Wolfram Sang
 
 This file is part of Picocom.
 

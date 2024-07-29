@@ -9,6 +9,5 @@ contributions.
 
 EOF
 git log --format=format:%an | sort -u >> CONTRIBUTORS
-make -B doc
-git commit -a -s -m "release version $tag, rebuilt docs"
+git commit -a -s -m "release version $tag"
 git tag "$tag"

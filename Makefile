@@ -1,5 +1,5 @@
 
-VERSION = 2023-04-dev
+VERSION = 2024-07
 ifneq (,$(findstring dev,$(VERSION)))
 VERSION := $(if $(shell command -v git),$(shell git describe --tags --dirty --always),$(VERSION))
 endif

@@ -4,7 +4,7 @@
 
 LOCAL_PATH := $(call my-dir)
 
-VERSION := 2023-04-dev
+VERSION := 2024-07
 TTY_Q_SZ := 0
 HISTFILE := .picocom_history
 
